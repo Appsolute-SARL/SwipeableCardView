@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CardFlinger</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="lorem_ipsum"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget viverra nisl. Donec ultrices aliquet odio sed ultrices. Vivamus dolor leo, condimentum non dignissim sed, malesuada in augue. Etiam malesuada sagittis luctus.</string>
+</resources>
