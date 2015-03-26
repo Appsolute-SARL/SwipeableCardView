@@ -33,7 +33,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
     private float cardVelocityY;
     private VelocityTracker velocityTracker;
     private DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator();
-    private OvershootInterpolator overshootInterpolator = new OvershootInterpolator(0.9f);
+    private OvershootInterpolator overshootInterpolator = new OvershootInterpolator(2.5f);
     private CardCallbacks onCardEventListener;
 
     public interface CardCallbacks{
@@ -89,6 +89,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                Log.d("Card touched",toString());
                 originalX = event.getX();
                 originalY = event.getY();
                 velocityTracker = VelocityTracker.obtain();
@@ -109,7 +110,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if((velocitySumX/velocityMeasures) > 200 && (velocitySumY/velocityMeasures) < 0){
+                if(velocityMeasures > 0 && (velocitySumX/velocityMeasures) > 200 && (velocitySumY/velocityMeasures) < 0){
                     Log.d("Mean velocities","Mean X velocity : "+(velocitySumX/velocityMeasures)+" Mean Y velocity : "+(velocitySumY/velocityMeasures));
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
@@ -134,7 +135,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                             .y(0)
                             .setListener(null)
                             .setInterpolator(overshootInterpolator)
-                            .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+                            .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
 
                     velocitySumX = 0;
                     velocitySumY = 0;

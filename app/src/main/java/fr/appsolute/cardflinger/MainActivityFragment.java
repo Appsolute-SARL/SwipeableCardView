@@ -3,6 +3,7 @@ package fr.appsolute.cardflinger;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,11 @@ import java.util.Random;
  */
 public class MainActivityFragment extends Fragment implements FlingableCard.CardCallbacks{
 
-    private final static int VISIBLE_CARD_NUMBER = 3;
+    private final static int VISIBLE_CARD_NUMBER = 5;
 
     FrameLayout layout;
     List<FlingableCard> cards = new ArrayList<>();
-    List<FlingableCard> subsetOfVisibleCards = new ArrayList<>(5);
+    List<FlingableCard> subsetOfVisibleCards = new ArrayList<>(VISIBLE_CARD_NUMBER);
 
     public MainActivityFragment() {
     }
@@ -39,7 +40,7 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.setMargins(20,20,20,20);
 
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < 20; i++){
             FlingableCard card = new FlingableCard(getActivity(),"Text "+i,this);
             card.setLayoutParams(params);
             cards.add(card);
@@ -50,11 +51,12 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
         }
 
         for(int i = 0; i < subsetOfVisibleCards.size(); i++){
-            layout.addView(cards.get(i), layout.getChildCount());
+            layout.addView(cards.get(i), 0);
             subsetOfVisibleCards.get(i).setCardElevation((subsetOfVisibleCards.size() - i)*3);
             subsetOfVisibleCards.get(i).setRotation(-5 + new Random().nextInt(10));
         }
 
+        //TODO
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,15 +81,16 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
      */
     private void permuteCards(@Nullable FlingableCard dismissedCard){
         if(dismissedCard != null){
-
+            Log.d("Dismissed card",dismissedCard.toString()+"\n index : "+cards.indexOf(dismissedCard)+"\nIndex of next card : "+(cards.indexOf(dismissedCard) + VISIBLE_CARD_NUMBER));
             FlingableCard nextCard = cards.get(cards.indexOf(dismissedCard) + VISIBLE_CARD_NUMBER); //Get the next card in the overall collection
+            Log.d("NextCard", cards.get(cards.indexOf(dismissedCard) + VISIBLE_CARD_NUMBER).toString());
             subsetOfVisibleCards.remove(dismissedCard);
             subsetOfVisibleCards.add(subsetOfVisibleCards.size(), nextCard);
 
             cards.remove(dismissedCard);
             cards.add(dismissedCard); //Add the dismissed card to the end of the overall collection
-            nextCard.setRotation(-5 + new Random().nextInt(10)); //Apply random rotation between +5° and +5°
-            layout.addView(nextCard); //Display the card
+            nextCard.setRotation(-5 + new Random().nextInt(10)); //Apply random rotation between -5 degrees and +5 degrees
+            layout.addView(nextCard,0); //Display the card at the end of the stack
 
 
             for(int i = 0; i < subsetOfVisibleCards.size(); i++){
