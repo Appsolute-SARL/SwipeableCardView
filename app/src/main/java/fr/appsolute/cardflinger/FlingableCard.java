@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -29,8 +31,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
     private float originalX;
     private float originalY;
-    private float cardVelocityX;
-    private float cardVelocityY;
     private VelocityTracker velocityTracker;
     private DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator();
     private OvershootInterpolator overshootInterpolator = new OvershootInterpolator(2.5f);
@@ -85,8 +85,24 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
         setOnTouchListener(this);
     }
 
+    public FlingableCard(Context context,String text, Drawable image, CardCallbacks callbacks){
+        super(context);
+        View v = inflate(context,R.layout.card_content,null);
+        textContent = (TextView) v.findViewById(R.id.card_text);
+        ImageView iv = (ImageView) v.findViewById(R.id.card_image);
+
+        textContent.setText(text);
+        iv.setImageDrawable(image);
+        onCardEventListener = callbacks;
+        addView(v);
+        setOnTouchListener(this);
+
+        setLayerType(LAYER_TYPE_HARDWARE,null);
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 Log.d("Card touched",toString());
@@ -111,12 +127,11 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
             case MotionEvent.ACTION_UP:
                 if(velocityMeasures > 0 && (velocitySumX/velocityMeasures) > 200 && (velocitySumY/velocityMeasures) < 0){
-                    Log.d("Mean velocities","Mean X velocity : "+(velocitySumX/velocityMeasures)+" Mean Y velocity : "+(velocitySumY/velocityMeasures));
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
                             .xBy(velocitySumX / velocityMeasures)
                             .yBy(velocitySumY / velocityMeasures)
-                            .alphaBy(.75f)
+                            .alpha(.2f)
                             .setListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {

@@ -3,7 +3,7 @@ package fr.appsolute.cardflinger;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +41,55 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
         params.setMargins(20,20,20,20);
 
         for(int i = 0; i < 20; i++){
-            FlingableCard card = new FlingableCard(getActivity(),"Text "+i,this);
-            card.setLayoutParams(params);
-            cards.add(card);
+            FlingableCard card;
+            switch(i%8){
+                case 0:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_8,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 1:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_1,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 2:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_2,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 3:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_3,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 4:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_4,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 5:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_5,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 6:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_6,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                case 7:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_7,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+                default:
+                    card = new FlingableCard(getActivity(),"Text "+i,ResourcesCompat.getDrawable(getResources(),R.drawable.picture_8,null) ,this);
+                    card.setLayoutParams(params);
+                    cards.add(card);
+                    break;
+            }
+
         }
 
         for(int i =0; i < VISIBLE_CARD_NUMBER; i++){
@@ -52,17 +98,18 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
 
         for(int i = 0; i < subsetOfVisibleCards.size(); i++){
             layout.addView(cards.get(i), 0);
-            subsetOfVisibleCards.get(i).setCardElevation((subsetOfVisibleCards.size() - i)*3);
+            subsetOfVisibleCards.get(i).setCardElevation((subsetOfVisibleCards.size() - i) * 3);
             subsetOfVisibleCards.get(i).setRotation(-5 + new Random().nextInt(10));
         }
 
-        //TODO
+        //TODO add cards dynamically
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cards.add(0,new FlingableCard(getActivity(),"Text 0",MainActivityFragment.this));
             }
         });
+
 
         return rootView;
     }
@@ -81,9 +128,7 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
      */
     private void permuteCards(@Nullable FlingableCard dismissedCard){
         if(dismissedCard != null){
-            Log.d("Dismissed card",dismissedCard.toString()+"\n index : "+cards.indexOf(dismissedCard)+"\nIndex of next card : "+(cards.indexOf(dismissedCard) + VISIBLE_CARD_NUMBER));
             FlingableCard nextCard = cards.get(cards.indexOf(dismissedCard) + VISIBLE_CARD_NUMBER); //Get the next card in the overall collection
-            Log.d("NextCard", cards.get(cards.indexOf(dismissedCard) + VISIBLE_CARD_NUMBER).toString());
             subsetOfVisibleCards.remove(dismissedCard);
             subsetOfVisibleCards.add(subsetOfVisibleCards.size(), nextCard);
 
