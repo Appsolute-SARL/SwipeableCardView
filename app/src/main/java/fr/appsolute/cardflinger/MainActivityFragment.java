@@ -40,7 +40,7 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.setMargins(20,20,20,20);
 
-        for(int i = 0; i < 20; i++){
+        for(int i = 0; i < 25; i++){
             FlingableCard card;
             switch(i%8){
                 case 0:
@@ -92,7 +92,7 @@ public class MainActivityFragment extends Fragment implements FlingableCard.Card
 
         }
 
-        for(int i =0; i < VISIBLE_CARD_NUMBER; i++){
+        for(int i = 0; i < VISIBLE_CARD_NUMBER; i++){
             subsetOfVisibleCards.add(cards.get(i));
         }
 

@@ -51,10 +51,8 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.FlingableCard,
                 0,0);
-
         try{
             setText(a.getString(R.styleable.FlingableCard_text));
-            textContent.setPadding(50, 50, 50, 50);
         } finally{
             a.recycle();
             addView(textContent);
@@ -138,8 +136,11 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                                     if (onCardEventListener != null)
                                         onCardEventListener.cardDismissed(FlingableCard.this);
                                     setAlpha(1);
-                                    setX(0);
-                                    setY(0);
+                                    animate().setListener(null)
+                                            .setDuration(500)
+                                            .setInterpolator(overshootInterpolator)
+                                            .x(0)
+                                            .y(0);
                                 }
                             });
                     velocitySumX = 0;
