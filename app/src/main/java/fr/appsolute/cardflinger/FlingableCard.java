@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 /**
@@ -21,12 +23,17 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
     private TextView textContent;
 
+    private long velocitySumX;
+    private long velocitySumY;
+    private long velocityMeasures;
+
     private float originalX;
     private float originalY;
     private float cardVelocityX;
     private float cardVelocityY;
     private VelocityTracker velocityTracker;
     private DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator();
+    private OvershootInterpolator overshootInterpolator = new OvershootInterpolator(0.9f);
     private CardCallbacks onCardEventListener;
 
     public interface CardCallbacks{
@@ -95,27 +102,53 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
                 velocityTracker.addMovement(event);
                 velocityTracker.computeCurrentVelocity(1000);
-                cardVelocityX = velocityTracker.getXVelocity();
-                cardVelocityY = velocityTracker.getYVelocity();
+
+                velocitySumX += velocityTracker.getXVelocity();
+                velocitySumY += velocityTracker.getYVelocity();
+                velocityMeasures +=1;
                 break;
 
             case MotionEvent.ACTION_UP:
-                if(Math.abs(cardVelocityX) > 300 || Math.abs(cardVelocityY) > 300){
-                    animate().setDuration(500)
+                if((velocitySumX/velocityMeasures) > 200 && (velocitySumY/velocityMeasures) < 0){
+                    Log.d("Mean velocities","Mean X velocity : "+(velocitySumX/velocityMeasures)+" Mean Y velocity : "+(velocitySumY/velocityMeasures));
+                    animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
-                            .xBy(cardVelocityX)
-                            .yBy(-Math.abs(cardVelocityY))
+                            .xBy(velocitySumX / velocityMeasures)
+                            .yBy(velocitySumY / velocityMeasures)
+                            .alphaBy(.75f)
                             .setListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
-                                    if(onCardEventListener != null)
+                                    if (onCardEventListener != null)
                                         onCardEventListener.cardDismissed(FlingableCard.this);
+                                    setAlpha(1);
+                                    setX(0);
+                                    setY(0);
                                 }
                             });
+                    velocitySumX = 0;
+                    velocitySumY = 0;
+                    velocityMeasures = 0;
+                }else{
+                    animate().x(0)
+                            .y(0)
+                            .setListener(null)
+                            .setInterpolator(overshootInterpolator)
+                            .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+
+                    velocitySumX = 0;
+                    velocitySumY = 0;
+                    velocityMeasures = 0;
                 }
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //Log.d("Card dimensions", "" + getMeasuredHeight() + " : " + getMeasuredWidth());
     }
 
     public void setText(String text){
@@ -145,6 +178,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
     @Override
     public String toString() {
-        return getText();
+        return getText()+" Elevation : "+getCardElevation();
     }
 }
