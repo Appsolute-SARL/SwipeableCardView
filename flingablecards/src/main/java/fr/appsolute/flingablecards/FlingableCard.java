@@ -136,6 +136,8 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                                     if (onCardEventListener != null)
                                         onCardEventListener.cardDismissedRight(FlingableCard.this);
                                     setAlpha(1);
+                                    setX(0);
+                                    setY(0);
                                 }
                             });
 
@@ -155,6 +157,8 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                                     if (onCardEventListener != null)
                                         onCardEventListener.cardDismissedLeft(FlingableCard.this);
                                     setAlpha(1);
+                                    setX(0);
+                                    setY(0);
                                 }
                             });
 
