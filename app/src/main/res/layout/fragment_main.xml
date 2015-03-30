@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivityFragment">
+    tools:context=".MainActivityFragment"
+    android:layout_margin="16dp">
 
     <fr.appsolute.cardflinger.CardContainer
         android:id="@+id/container"

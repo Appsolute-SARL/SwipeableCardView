@@ -49,6 +49,11 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
         return subsetOfVisibleCards;
     }
 
+    /**
+     * Call this method last as it add the cards to the card container. Should you fail to call this
+     * after setting the parameters of your cards like tilt value, your cards won't take them into
+     * account.
+     */
     public void layOutViews(){
         for (int i = 0; i < subsetOfVisibleCards.size(); i++){
             addView(subsetOfVisibleCards.get(i), 0);
@@ -86,6 +91,15 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
     }
 
     /**
+     * Set the corner radius for all cards in the list
+     * @param cornerRadiusPx : the corner radius to apply in pixels.
+     */
+    public void setCornerRadius(int cornerRadiusPx){
+        for(FlingableCard card : fullCardList)
+            card.setRadius(cornerRadiusPx);
+    }
+
+    /**
      * Method that applies a circular permutation ([0,1,...,n] = [1,2,...,n,0]) to the card collection
      * and add the next card in the collection at the end of the {@link} #subsetOfVisibleCards
      *
@@ -116,7 +130,7 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
 
     /**
      * Setting this value to true will make the cards tilt between the default values
-     * -5° and +5° for the stack to appear messy. Setting this to no will tidy up the cards.
+     * -5 degrees and +5 degrees for the stack to appear messy. Setting this to no will tidy up the cards.
      * @param messyStack : determine if the cards are messy or not.
      */
     public void setMessyStack(boolean messyStack) {
@@ -128,6 +142,7 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
     /**
      * Convenience method to directly set the messiness to true and give the tilt angle that will be
      * applied to the cards. To set the messiness to false use the previous method.
+     * Careful ! : Values above 45 degrees will see weird behavior happen.
      * @param angularAmplitude : the angle with which the cards will be tilted. The resulting rotation
      *                         angle of the cards is between -angularAmplitude and +angularAmplitude.
      */

@@ -91,7 +91,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
         onCardEventListener = callbacks;
         addView(v);
         setOnTouchListener(this);
-
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
@@ -120,7 +119,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if(velocityMeasures > 0 && (velocitySumX/velocityMeasures) > 100 && (velocitySumY/velocityMeasures) < 0){
+                if(velocityMeasures > 0 && (((velocitySumX/velocityMeasures) > 100 && (velocitySumY/velocityMeasures) < 0) || ((velocitySumX/velocityMeasures) > 0 && (velocitySumY/velocityMeasures) < -100))){
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
                             .xBy(velocitySumX / velocityMeasures)
@@ -156,12 +155,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                 break;
         }
         return true;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //Log.d("Card dimensions", "" + getMeasuredHeight() + " : " + getMeasuredWidth());
     }
 
     public void setText(String text){
