@@ -36,7 +36,8 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
     private CardCallbacks onCardEventListener;
 
     public interface CardCallbacks{
-        void cardDismissed(FlingableCard dismissedCard);
+        void cardDismissedRight(FlingableCard dismissedCard);
+        void cardDismissedLeft(FlingableCard dismissedCard);
     }
 
     public FlingableCard(Context context) {
@@ -119,7 +120,11 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if(velocityMeasures > 0 && (((velocitySumX/velocityMeasures) > 100 && (velocitySumY/velocityMeasures) < 0) || ((velocitySumX/velocityMeasures) > 0 && (velocitySumY/velocityMeasures) < -100))){
+                if(velocityMeasures > 0 &&
+                        (
+                                ((velocitySumX/velocityMeasures) > 100 && (velocitySumY/velocityMeasures) < 0) || /*More rightward that upward fling but still top right quarter*/
+                                ((velocitySumX/velocityMeasures) > 0 && (velocitySumY/velocityMeasures) < -100)   /*More upward than rightward fling but still top right quarter*/
+                        )){
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
                             .xBy(velocitySumX / velocityMeasures)
@@ -129,29 +134,40 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     if (onCardEventListener != null)
-                                        onCardEventListener.cardDismissed(FlingableCard.this);
+                                        onCardEventListener.cardDismissedRight(FlingableCard.this);
                                     setAlpha(1);
-                                    animate().setListener(null)
-                                            .setDuration(500)
-                                            .setInterpolator(overshootInterpolator)
-                                            .x(0)
-                                            .y(0);
                                 }
                             });
-                    velocitySumX = 0;
-                    velocitySumY = 0;
-                    velocityMeasures = 0;
-                }else{
+
+                } else if(velocityMeasures > 0 &&
+                        (
+                                ((velocitySumX / velocityMeasures) < -100 && (velocitySumY / velocityMeasures) < 0) || /*More leftward that upward fling but still top right quarter*/
+                                ((velocitySumX / velocityMeasures) < 0 && (velocitySumY / velocityMeasures) < -100)   /*More upward than leftward fling but still top right quarter*/
+                        )){
+                    animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
+                            .setInterpolator(decelerateInterpolator)
+                            .xBy(velocitySumX / velocityMeasures)
+                            .yBy(velocitySumY / velocityMeasures)
+                            .alpha(.2f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    if (onCardEventListener != null)
+                                        onCardEventListener.cardDismissedLeft(FlingableCard.this);
+                                    setAlpha(1);
+                                }
+                            });
+
+                } else{
                     animate().x(0)
                             .y(0)
                             .setListener(null)
                             .setInterpolator(overshootInterpolator)
                             .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-
-                    velocitySumX = 0;
-                    velocitySumY = 0;
-                    velocityMeasures = 0;
                 }
+                velocitySumX = 0;
+                velocitySumY = 0;
+                velocityMeasures = 0;
                 break;
         }
         return true;
@@ -168,14 +184,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
     public String getText(){
         return textContent.getText().toString();
-    }
-
-    public TextView getTextContent() {
-        return textContent;
-    }
-
-    public void setOnCardEventListener(CardCallbacks callbacks){
-        this.onCardEventListener = callbacks;
     }
 
     public CardCallbacks getOnCardEventListener() {

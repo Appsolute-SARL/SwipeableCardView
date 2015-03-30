@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -50,7 +51,9 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
         super(context, attrs, defStyleAttr);
     }
 
-    public void populateFullCardsList(List<FlingableCard> cards){
+    public void populateFullCardsList(List<FlingableCard> cards) throws Exception {
+        if(cards.size() < visibleCardNumber)
+            throw new Exception("Cards list size : "+cards.size()+" is less than the visible cards number : "+visibleCardNumber);
         for(int i = 0; i < cards.size(); i++){
             fullCardList.add(cards.get(i));
         }
@@ -134,9 +137,17 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
 
     /***************************Interface Implementation***************************/
     @Override
-    public void cardDismissed(FlingableCard dismissedCard) {
+    public void cardDismissedRight(FlingableCard dismissedCard) {
         removeView(dismissedCard);
         permuteCards(dismissedCard);
+        Log.d("Card container", "Dismissed Right");
+    }
+
+    @Override
+    public void cardDismissedLeft(FlingableCard dismissedCard) {
+        removeView(dismissedCard);
+        permuteCards(dismissedCard);
+        Log.d("Card container", "Dismissed Left");
     }
 
     /***************************Accessors***************************/

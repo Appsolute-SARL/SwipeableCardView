@@ -71,7 +71,11 @@ public class MainActivityFragment extends Fragment{
             }
         }
 
-        cardContainer.populateFullCardsList(cards);
+        try {
+            cardContainer.populateFullCardsList(cards);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         cardContainer.layOutViews();
 
         return rootView;
