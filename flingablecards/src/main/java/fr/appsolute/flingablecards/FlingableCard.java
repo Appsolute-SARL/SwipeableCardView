@@ -1,4 +1,4 @@
-package fr.appsolute.cardflinger;
+package fr.appsolute.flingablecards;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

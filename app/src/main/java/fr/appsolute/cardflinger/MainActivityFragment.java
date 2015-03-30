@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.appsolute.flingablecards.CardContainer;
+import fr.appsolute.flingablecards.FlingableCard;
+
 
 /**
  * A placeholder fragment containing a simple view.

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CardFlinger.iml" filepath="$PROJECT_DIR$/CardFlinger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flingablecards/flingablecards.iml" filepath="$PROJECT_DIR$/flingablecards/flingablecards.iml" />
     </modules>
   </component>
 </project>

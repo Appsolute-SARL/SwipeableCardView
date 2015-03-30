@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivityFragment">
 
-    <fr.appsolute.cardflinger.CardContainer
+    <fr.appsolute.flingablecards.CardContainer
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
