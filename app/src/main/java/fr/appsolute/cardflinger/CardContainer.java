@@ -1,6 +1,7 @@
 package fr.appsolute.cardflinger;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -23,6 +24,7 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
 
     private boolean messyStack = false;
     private int tiltAngle = 5;
+    private int cornerRadius = 5;
 
     public CardContainer(Context context) {
         super(context);
@@ -30,6 +32,18 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
 
     public CardContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        final TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.CardContainer,0,0);
+        try{
+            messyStack = a.getBoolean(R.styleable.CardContainer_messy,false);
+            cornerRadius = a.getInt(R.styleable.CardContainer_corner_radius,5);
+            tiltAngle = a.getInt(R.styleable.CardContainer_angular_amplitude,5);
+            visibleCardNumber = (byte)a.getInt(R.styleable.CardContainer_displayed_cards,5);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            a.recycle();
+        }
     }
 
     public CardContainer(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -40,6 +54,7 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
         for(int i = 0; i < cards.size(); i++){
             fullCardList.add(cards.get(i));
         }
+        setCornerRadius(cornerRadius);
         populateSubset();
     }
 
@@ -95,8 +110,9 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
      * @param cornerRadiusPx : the corner radius to apply in pixels.
      */
     public void setCornerRadius(int cornerRadiusPx){
+        cornerRadius = cornerRadiusPx;
         for(FlingableCard card : fullCardList)
-            card.setRadius(cornerRadiusPx);
+            card.setRadius(cornerRadius);
     }
 
     /**

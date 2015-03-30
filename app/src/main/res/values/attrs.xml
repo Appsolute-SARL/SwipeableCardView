@@ -3,4 +3,11 @@
     <declare-styleable name="FlingableCard">
         <attr name="text" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="CardContainer">
+        <attr name="corner_radius" format="integer"/>
+        <attr name="displayed_cards" format="integer"/>
+        <attr name="messy" format="boolean"/>
+        <attr name="angular_amplitude" format="integer"/>
+    </declare-styleable>
 </resources>

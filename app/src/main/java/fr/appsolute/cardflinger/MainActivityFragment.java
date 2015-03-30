@@ -72,8 +72,6 @@ public class MainActivityFragment extends Fragment{
         }
 
         cardContainer.populateFullCardsList(cards);
-        cardContainer.setMessyStack(true);
-        cardContainer.setCornerRadius(20);
         cardContainer.layOutViews();
 
         return rootView;
