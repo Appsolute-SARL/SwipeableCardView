@@ -7,7 +7,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -68,7 +67,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
     public FlingableCard(Context context,FlingableCard card){
         super(context);
         setText(card.getText());
-        textContent.setPadding(50, 50, 50, 50);
         onCardEventListener = card.getOnCardEventListener();
         addView(textContent);
         setOnTouchListener(this);
@@ -77,7 +75,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
     public FlingableCard(Context context,String text, CardCallbacks callbacks){
         super(context);
         setText(text);
-        textContent.setPadding(50, 50, 50, 50);
         onCardEventListener = callbacks;
         addView(textContent);
         setOnTouchListener(this);
@@ -95,7 +92,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
         addView(v);
         setOnTouchListener(this);
 
-        setLayerType(LAYER_TYPE_HARDWARE,null);
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override
@@ -103,7 +100,6 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                Log.d("Card touched",toString());
                 originalX = event.getX();
                 originalY = event.getY();
                 velocityTracker = VelocityTracker.obtain();
@@ -124,7 +120,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if(velocityMeasures > 0 && (velocitySumX/velocityMeasures) > 200 && (velocitySumY/velocityMeasures) < 0){
+                if(velocityMeasures > 0 && (velocitySumX/velocityMeasures) > 100 && (velocitySumY/velocityMeasures) < 0){
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
                             .xBy(velocitySumX / velocityMeasures)

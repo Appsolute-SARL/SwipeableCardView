@@ -4,40 +4,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivityFragment">
 
-    <LinearLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Tab 1"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Tab 2"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Tab 3"/>
-
-    </LinearLayout>
-
-    <FrameLayout
+    <fr.appsolute.cardflinger.CardContainer
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tabs"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
