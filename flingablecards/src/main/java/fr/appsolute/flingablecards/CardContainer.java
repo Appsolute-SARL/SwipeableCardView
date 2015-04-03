@@ -27,6 +27,8 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
     private int tiltAngle = 5;
     private int cornerRadius = 5;
 
+    private boolean infiniteStack = true;
+
     public CardContainer(Context context) {
         super(context);
     }
@@ -40,6 +42,7 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
             cornerRadius = a.getInt(R.styleable.CardContainer_corner_radius,5);
             tiltAngle = a.getInt(R.styleable.CardContainer_angular_amplitude,5);
             visibleCardNumber = (byte)a.getInt(R.styleable.CardContainer_displayed_cards,5);
+            infiniteStack = a.getBoolean(R.styleable.CardContainer_inifinite,true);
         }catch(Exception e){
             e.printStackTrace();
         }finally {
@@ -125,13 +128,17 @@ public class CardContainer extends FrameLayout implements FlingableCard.CardCall
      * @param dismissedCard : the card that has been dismissed from the stack.
      */
     public void permuteCards(FlingableCard dismissedCard){
+        if(fullCardList.indexOf(dismissedCard) + visibleCardNumber < fullCardList.size()){
             FlingableCard nextCard = fullCardList.get(fullCardList.indexOf(dismissedCard) + visibleCardNumber); //Get the next card in the overall collection
             subsetOfVisibleCards.remove(dismissedCard);
             subsetOfVisibleCards.add(subsetOfVisibleCards.size(), nextCard);
 
             fullCardList.remove(dismissedCard);
-            fullCardList.add(dismissedCard); //Add the dismissed card to the end of the overall collection
+            if(infiniteStack)
+                fullCardList.add(dismissedCard); //Add the dismissed card to the end of the overall collection
+
             addView(nextCard, 0); //Display the card at the end of the stack
+        }
     }
 
 

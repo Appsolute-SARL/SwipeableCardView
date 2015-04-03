@@ -125,6 +125,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                                 ((velocitySumX/velocityMeasures) > 100 && (velocitySumY/velocityMeasures) < 0) || /*More rightward that upward fling but still top right quarter*/
                                 ((velocitySumX/velocityMeasures) > 0 && (velocitySumY/velocityMeasures) < -100)   /*More upward than rightward fling but still top right quarter*/
                         )){
+
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
                             .xBy(velocitySumX / velocityMeasures)
@@ -146,6 +147,7 @@ public class FlingableCard extends CardView implements View.OnTouchListener {
                                 ((velocitySumX / velocityMeasures) < -100 && (velocitySumY / velocityMeasures) < 0) || /*More leftward that upward fling but still top right quarter*/
                                 ((velocitySumX / velocityMeasures) < 0 && (velocitySumY / velocityMeasures) < -100)   /*More upward than leftward fling but still top right quarter*/
                         )){
+
                     animate().setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime))
                             .setInterpolator(decelerateInterpolator)
                             .xBy(velocitySumX / velocityMeasures)

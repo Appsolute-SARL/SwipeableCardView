@@ -9,5 +9,6 @@
         <attr name="displayed_cards" format="integer"/>
         <attr name="messy" format="boolean"/>
         <attr name="angular_amplitude" format="integer"/>
+        <attr name="inifinite" format="boolean"/>
     </declare-styleable>
 </resources>
