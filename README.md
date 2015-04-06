@@ -20,7 +20,7 @@ The flingable cards are based on android CardViews so they have the same customi
 
 + corner_radius : applies radius in pixels to the corner of all the cards.
 + displayed_cards : number of cards displayed at the same time. Depending on the device, this could make the application slow.  5 seems to be a good compromise since it gives enough depth not to see the background while not loading too much cards.
-+ messy : boolean parameter allwing the cards to be tilted from a slight angle giving them a messy look. The default angle is   between -5° and +5°. Setting this to false tidies up the stack.
++ messy : boolean parameter allwing the cards to be tilted a slight angle giving them a messy look. The default angle is   between -5° and +5°. Setting this to false tidies up the stack.
 + angular_amplitude : This parameter will only work if the "messy" parameter is set to true. It allows for modifying the   angular amplitude of the tilt between -angular_amplitude° and +angular_amplitude°
 
 
