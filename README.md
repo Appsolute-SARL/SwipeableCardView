@@ -2,7 +2,7 @@
 
 ###### Flingable cards for android. An implementation of Tinder-like cards using android CardView as a base. 
 
-The cards respond to the fling gesture (hence the name) and differentiate 2 different cases : fling towards the top right quarter or top left quarter.
+The cards respond to the fling gesture and differentiate 2 different cases : fling towards the top right quarter or top left quarter.
 On each different cases a different callback is fired allowing for distinct behaviors when flinging to the right/top right or left/top left.
 
 The repo contains the library and a sample app for you to test out.
